@@ -1,5 +1,5 @@
 Summary:	This is the Mowitz ("More widgets") library
-Summary(pl):	Biblioteka Mowitz
+Summary(pl):	Biblioteka Mowitz ("More widgets" - "wiêcej widgetów")
 Name:		Mowitz
 Version:	0.3.0
 Release:	1
@@ -16,8 +16,10 @@ The project's goal is to create a library of widgets for X
 applications to use. The widgets have been snarfed from various
 sources and are all open source (GPL or MIT licenses).
 
-#%description -l pl
-#TODO
+%description -l pl
+Celem projektu jest stworzenie biblioteki widgetów do u¿ywania przez
+aplikacje X. Widgety zosta³y ¶ci±gniête z ró¿nych ¼róde³ i maj±
+otwarte ¼ród³a (na licencji GPL lub MIT).
 
 %package devel
 Summary:	Header files for Mowitz library
@@ -56,6 +58,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+install -D doc/Slider.man $RPM_BUILD_ROOT%{_mandir}/man3/Slider.3
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -71,10 +75,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/*
+%doc doc/[!MS]* doc/Slider.README
 %attr(755,root,root) %{_libdir}/lib*.so
 %{_libdir}/lib*.la
 %{_includedir}/%{name}
+%{_mandir}/man3/*.3*
 
 %files static
 %defattr(644,root,root,755)
