@@ -1,4 +1,4 @@
-Summary:	This is the Mowitz ("More widgets") library.
+Summary:	This is the Mowitz ("More widgets") library
 Summary(pl):	Biblioteka Mowitz
 Name:		Mowitz
 Version:	0.3.0
@@ -16,7 +16,7 @@ The project's goal is to create a library of widgets for X
 applications to use. The widgets have been snarfed from various
 sources and are all open source (GPL or MIT licenses).
 
-%description -l pl
+#%description -l pl
 #TODO
 
 %package devel
