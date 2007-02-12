@@ -1,5 +1,5 @@
 Summary:	This is the Mowitz ("More widgets") library
-Summary(pl):	Biblioteka Mowitz ("More widgets" - "wiêcej widgetów")
+Summary(pl.UTF-8):   Biblioteka Mowitz ("More widgets" - "wiÄ™cej widgetÃ³w")
 Name:		Mowitz
 Version:	0.3.0
 Release:	1
@@ -16,33 +16,33 @@ The project's goal is to create a library of widgets for X
 applications to use. The widgets have been snarfed from various
 sources and are all open source (GPL or MIT licenses).
 
-%description -l pl
-Celem projektu jest stworzenie biblioteki widgetów do u¿ywania przez
-aplikacje X. Widgety zosta³y ¶ci±gniête z ró¿nych ¼róde³ i maj±
-otwarte ¼ród³a (na licencji GPL lub MIT).
+%description -l pl.UTF-8
+Celem projektu jest stworzenie biblioteki widgetÃ³w do uÅ¼ywania przez
+aplikacje X. Widgety zostaÅ‚y Å›ciÄ…gniÄ™te z rÃ³Å¼nych ÅºrÃ³deÅ‚ i majÄ…
+otwarte ÅºrÃ³dÅ‚a (na licencji GPL lub MIT).
 
 %package devel
 Summary:	Header files for Mowitz library
-Summary(pl):	Pliki nag³ówkowe biblioteki Mowitz
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe biblioteki Mowitz
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for Mowitz library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki Mowitz.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki Mowitz.
 
 %package static
 Summary:	Static Mowitz library
-Summary(pl):	Statyczna biblioteka Mowitz
+Summary(pl.UTF-8):   Statyczna biblioteka Mowitz
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static Mowitz library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka Mowitz.
 
 %prep
