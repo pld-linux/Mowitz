@@ -1,5 +1,5 @@
 Summary:	This is the Mowitz ("More widgets") library
-Summary(pl.UTF-8):   Biblioteka Mowitz ("More widgets" - "więcej widgetów")
+Summary(pl.UTF-8):	Biblioteka Mowitz ("More widgets" - "więcej widgetów")
 Name:		Mowitz
 Version:	0.3.0
 Release:	1
@@ -23,7 +23,7 @@ otwarte źródła (na licencji GPL lub MIT).
 
 %package devel
 Summary:	Header files for Mowitz library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki Mowitz
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Mowitz
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -35,7 +35,7 @@ Pliki nagłówkowe biblioteki Mowitz.
 
 %package static
 Summary:	Static Mowitz library
-Summary(pl.UTF-8):   Statyczna biblioteka Mowitz
+Summary(pl.UTF-8):	Statyczna biblioteka Mowitz
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
