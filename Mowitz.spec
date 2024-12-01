@@ -1,14 +1,19 @@
 Summary:	This is the Mowitz ("More widgets") library
 Summary(pl.UTF-8):	Biblioteka Mowitz ("More widgets" - "więcej widgetów")
 Name:		Mowitz
-Version:	0.3.0
+Version:	0.3.1
 Release:	1
-License:	GPL
+License:	GPL v2+, LGPL v2+, MIT
 Group:		Libraries
 Source0:	http://siag.nu/pub/mowitz/%{name}-%{version}.tar.gz
-# Source0-md5:	447ea53a67eb4356438e80494e550a3b
+# Source0-md5:	35cfd18b05d45e0ba6b48896bd258138
 URL:		http://siag.nu/mowitz/
 BuildRequires:	neXtaw-devel
+BuildRequires:	xorg-lib-libX11-devel
+BuildRequires:	xorg-lib-libXext-devel
+BuildRequires:	xorg-lib-libXmu-devel
+BuildRequires:	xorg-lib-libXpm-devel
+BuildRequires:	xorg-lib-libXt-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -26,6 +31,12 @@ Summary:	Header files for Mowitz library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Mowitz
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	neXtaw-devel
+Requires:	xorg-lib-libX11-devel
+Requires:	xorg-lib-libXext-devel
+Requires:	xorg-lib-libXmu-devel
+Requires:	xorg-lib-libXpm-devel
+Requires:	xorg-lib-libXt-devel
 
 %description devel
 Header files for Mowitz library.
@@ -49,7 +60,9 @@ Statyczna biblioteka Mowitz.
 %setup -q
 
 %build
-%configure
+%configure \
+	LIBS="-lneXtaw -lXmu -lXt -lXpm -lXext -lX11"
+
 %{__make}
 
 %install
@@ -58,7 +71,12 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -D doc/Slider.man $RPM_BUILD_ROOT%{_mandir}/man3/Slider.3
+# not needed at runtime
+%{__rm} $RPM_BUILD_ROOT%{_datadir}/Mowitz/mkt1cfg
+# packaged as %doc
+%{__rm} -r $RPM_BUILD_ROOT%{_prefix}/doc
+
+install -Dp doc/Slider.man $RPM_BUILD_ROOT%{_mandir}/man3/Slider.3
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -68,19 +86,29 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README COPYING
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_libdir}/lib*.so.*.*.*
-%{_datadir}/%{name}
+%doc AUTHORS COPYING ChangeLog README
+%attr(755,root,root) %{_libdir}/libMowitz.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libMowitz.so.0
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/fonts
+%{_datadir}/%{name}/pixmaps
+%attr(755,root,root) %{_datadir}/%{name}/any2xpm
+%attr(755,root,root) %{_datadir}/%{name}/readpfa
+%{_datadir}/%{name}/FontDataBase
+%{_datadir}/%{name}/IsoLatin*.enc
+%{_datadir}/%{name}/fonts.txt
+%{_datadir}/%{name}/rgb.txt
+%{_datadir}/%{name}/t1lib.config
 
 %files devel
 %defattr(644,root,root,755)
-%doc doc/[!MS]* doc/Slider.README
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
-%{_includedir}/%{name}
-%{_mandir}/man3/*.3*
+%doc doc/{*.README,*.html,*.gif}
+%attr(755,root,root) %{_bindir}/mowitz-config
+%attr(755,root,root) %{_libdir}/libMowitz.so
+%{_libdir}/libMowitz.la
+%{_includedir}/Mowitz
+%{_mandir}/man3/Slider.3*
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libMowitz.a
