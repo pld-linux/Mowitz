@@ -7,6 +7,7 @@ License:	GPL v2+, LGPL v2+, MIT
 Group:		Libraries
 Source0:	http://siag.nu/pub/mowitz/%{name}-%{version}.tar.gz
 # Source0-md5:	35cfd18b05d45e0ba6b48896bd258138
+Patch0:		%{name}-includes.patch
 URL:		http://siag.nu/mowitz/
 BuildRequires:	neXtaw-devel
 BuildRequires:	xorg-lib-libX11-devel
@@ -58,6 +59,7 @@ Statyczna biblioteka Mowitz.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %configure \

@@ -1,0 +1,37 @@
+--- Mowitz-0.3.1/Mowitz/MwHandle.c.orig	2007-08-30 08:39:21.000000000 +0200
++++ Mowitz-0.3.1/Mowitz/MwHandle.c	2024-12-02 06:27:40.257779791 +0100
+@@ -4,6 +4,7 @@
+  */
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <X11/IntrinsicP.h>
+ #include <X11/StringDefs.h>
+ #include "MwUtils.h"
+--- Mowitz-0.3.1/examples/listtree2.c.orig	2005-11-02 20:57:49.000000000 +0100
++++ Mowitz-0.3.1/examples/listtree2.c	2024-12-02 06:29:18.818350348 +0100
+@@ -1,4 +1,5 @@
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <X11/Intrinsic.h>
+ #include <X11/StringDefs.h>
+ #include "TreeFSel.h"
+--- Mowitz-0.3.1/examples/Directory.c.orig	2005-11-02 20:57:48.000000000 +0100
++++ Mowitz-0.3.1/examples/Directory.c	2024-12-02 06:29:50.098531425 +0100
+@@ -25,6 +25,7 @@
+  
+ /* Converted to POSIX by Rob McMullen */
+ 
++#include <sys/stat.h>
+ #include "Directory.h"
+ 
+ /*--------------------------------------------------------------------------*
+--- Mowitz-0.3.1/examples/rulerdemo.c.orig	2005-11-02 20:57:49.000000000 +0100
++++ Mowitz-0.3.1/examples/rulerdemo.c	2024-12-02 06:29:58.801973321 +0100
+@@ -1,5 +1,6 @@
+ 
+ #include <stdio.h>
++#include <stdlib.h>
+ 
+ #include <X11/StringDefs.h>
+ #include <X11/Intrinsic.h>
