@@ -1,0 +1,238 @@
+--- Mowitz-0.3.1/Mowitz/MwCombo.c.orig	2005-11-02 20:57:40.000000000 +0100
++++ Mowitz-0.3.1/Mowitz/MwCombo.c	2026-02-08 09:12:54.690800167 +0100
+@@ -142,7 +142,7 @@ static Boolean SetValues(Widget, Widget,
+ static XtGeometryResult GeometryManager(Widget,
+ 		XtWidgetGeometry *, XtWidgetGeometry *);
+ static void ChangeManaged(Widget);
+-static void Redisplay();
++static void Redisplay(Widget, XEvent *, Region);
+ 
+ #define SuperClass ((MwFrameWidgetClass)&mwFrameClassRec)
+ 
+--- Mowitz-0.3.1/Mowitz/MwListTree.c.orig	2005-11-02 20:57:40.000000000 +0100
++++ Mowitz-0.3.1/Mowitz/MwListTree.c	2026-02-08 09:22:24.520496140 +0100
+@@ -99,25 +99,25 @@ static XtResource resources[] =
+ 
+ #undef offset
+ 
+-static void Initialize();
+-static void Destroy();
+-static void Redisplay();
+-static void Resize();
+-static void ChangeSize();
++static void Initialize(Widget, Widget, ArgList, Cardinal *);
++static void Destroy(Widget);
++static void Redisplay(Widget, XExposeEvent *, Region);
++static void Resize(Widget);
++static void ChangeSize(MwListTreeWidget);
+ #if 0
+-static XtGeometryResult QueryGeometry();
++static XtGeometryResult QueryGeometry(MwListTreeWidget, XtWidgetGeometry *, XtWidgetGeometry *);
+ #endif
+-static Boolean SetValues();
+-static void Draw();
+-static void DrawAll();
+-static void DrawItemHighlight(), DrawItemHighlightClear();
+-static MwListTreeItem *GetItem();
+-static void Select(), Notify(), Unset(), Extend();
+-static void DeleteChildren();
+-static Boolean Layout();
++static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
++static void Draw(MwListTreeWidget, Boolean, int, int);
++static void DrawAll(MwListTreeWidget);
++static void DrawItemHighlight(MwListTreeWidget, MwListTreeItem *), DrawItemHighlightClear(MwListTreeWidget, MwListTreeItem *);
++static MwListTreeItem *GetItem(MwListTreeWidget, int);
++static void Select(Widget, XEvent *, String *, Cardinal *), Notify(Widget, XEvent *, String *, Cardinal *), Unset(Widget, XEvent *, String *, Cardinal *), Extend(Widget, XEvent *, String *, Cardinal *);
++static void DeleteChildren(MwListTreeWidget, MwListTreeItem *);
++static Boolean Layout(Widget, Boolean, Boolean, Dimension *, Dimension *);
+ 
+ #ifdef USE_RDD
+-static void StartDrag(), EndDrag(), Drop();
++static void StartDrag(Widget, XButtonEvent *, String *, Cardinal *), EndDrag(Widget, XButtonEvent *, String *, Cardinal *);
+ 
+ #endif
+ 
+@@ -174,7 +174,7 @@ MwListTreeClassRec listtreeClassRec =
+ 	/* visible_interest      */ True,
+ 	/* destroy               */ Destroy,
+ 	/* resize                */ Resize,
+-	/* expose                */ Redisplay,
++	/* expose                */ (XtExposeProc)Redisplay,
+ 	/* set_values            */ SetValues,
+ 	/* set_values_hook       */ NULL,
+ 	/* set_values_almost     */ XtInheritSetValuesAlmost,
+@@ -1869,7 +1869,7 @@ AlphabetizeItems(const void *item1, cons
+ }
+ 
+ int
+-MwListTreeUserOrderSiblings(MwListTreeWidget w, MwListTreeItem *item,int (*func)())
++MwListTreeUserOrderSiblings(MwListTreeWidget w, MwListTreeItem *item,int (*func)(const void *, const void *))
+ {
+   MwListTreeItem *first, *parent, **list;
+   size_t i, count, size;
+@@ -1928,7 +1928,7 @@ MwListTreeOrderSiblings(MwListTreeWidget
+ }
+ 
+ int
+-MwListTreeUserOrderChildren(MwListTreeWidget w, MwListTreeItem *item,int (*func)())
++MwListTreeUserOrderChildren(MwListTreeWidget w, MwListTreeItem *item,int (*func)(const void *, const void *))
+ {
+   MwListTreeItem *first;
+ 
+--- Mowitz-0.3.1/Mowitz/MwRuler.c.orig	2005-11-02 20:57:41.000000000 +0100
++++ Mowitz-0.3.1/Mowitz/MwRuler.c	2026-02-08 09:51:49.979870346 +0100
+@@ -205,7 +205,7 @@ static XtResource resources[] = {
+ #ifdef	__STDC__
+ 
+ 	/* member functions */
+-static	void	RulerClassInit() ;
++static	void	RulerClassInit( void ) ;
+ static	void	RulerInit( Widget req, Widget new, ArgList, Cardinal *) ;
+ static	void	RulerRealize( Widget, Mask *, XSetWindowAttributes *) ;
+ static	void	RulerDestroy( Widget ) ;
+@@ -250,7 +250,7 @@ static	void	fracStr( MwRulerWidget, char
+ static	int	fracWid(MwRulerWidget, int v, int divisions) ;
+ static	int	rulerWid(MwRulerWidget, int v, int divisions) ;
+ static	int	minStep( int step, int sm, double scale) ;
+-static	int	maxDiv( MwRulerWidget, int d, int wid, int (*func)(), int a) ;
++static	int	maxDiv( MwRulerWidget, int d, int wid, int (*func)(MwRulerWidget, int, int), int a) ;
+ 
+ #else	/* K&R C */
+ 
+@@ -619,7 +619,7 @@ maxDiv(rw, divisions, width, func, arg)
+ 	MwRulerWidget rw ;
+ 	int	divisions ;	/* initial # of divisions */
+ 	int	width ;		/* ruler scale factor, pixels */
+-	int	(*func)() ;	/* returns width of one division */
++	int	(*func)(MwRulerWidget, int, int) ;	/* returns width of one division */
+ 	int	arg ;		/* passed to func */
+ {
+ 	int	i ;
+--- Mowitz-0.3.1/Mowitz/MwSpinner.c.orig	2005-11-02 20:57:41.000000000 +0100
++++ Mowitz-0.3.1/Mowitz/MwSpinner.c	2026-02-08 09:52:30.890087426 +0100
+@@ -121,7 +121,7 @@ static void Resize(Widget);
+ static XtGeometryResult GeometryManager(Widget,
+                 XtWidgetGeometry *, XtWidgetGeometry *);
+ static void ChangeManaged(Widget);
+-static void Redisplay();
++static void Redisplay(Widget, XEvent *, Region);
+ 
+ static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
+ 
+--- Mowitz-0.3.1/Mowitz/MwTextField.c.orig	2005-11-02 20:57:42.000000000 +0100
++++ Mowitz-0.3.1/Mowitz/MwTextField.c	2026-02-08 09:59:07.882187133 +0100
+@@ -67,20 +67,20 @@ static XtResource resources[] =
+ 
+ #undef offset
+ 
+-static void Initialize();
++static void Initialize(Widget, Widget, ArgList, Cardinal *);
+ static void Realize(Widget, XtValueMask *, XSetWindowAttributes *);
+-static void Destroy();
+-static void Redisplay();
+-static void Resize();
+-static Boolean SetValues();
+-static void Draw(), DrawInsert(), MassiveChangeDraw(), DrawTextReposition(),
+-  ClearHighlight(), DrawHighlight(), DrawCursor(), EraseCursor();
+-static Boolean PositionCursor(), MassiveCursorAdjust();
+-static void Nothing(), Activate(), InsertChar(), ForwardChar(),
+-  ForwardToEnd(), BackwardChar(), BackwardToStart(), DeleteNext(),
+-  DeleteToEnd(), DeletePrev(), DeleteToStart(), DeleteHighlighted(),
+-  TransposeChars(), SelectStart(), ExtendStart(), ExtendAdjust(),
+-  ExtendEnd(), InsertSelection();
++static void Destroy(MwTextFieldWidget);
++static void Redisplay(Widget, XExposeEvent *, Region);
++static void Resize(Widget);
++static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
++static void Draw(MwTextFieldWidget), DrawInsert(MwTextFieldWidget), MassiveChangeDraw(MwTextFieldWidget), DrawTextReposition(MwTextFieldWidget),
++  ClearHighlight(MwTextFieldWidget), DrawHighlight(MwTextFieldWidget), DrawCursor(MwTextFieldWidget), EraseCursor(MwTextFieldWidget);
++static Boolean PositionCursor(MwTextFieldWidget), MassiveCursorAdjust(MwTextFieldWidget);
++static void Nothing(Widget, XEvent *, String *, Cardinal *), Activate(Widget, XEvent *, String *, Cardinal *), InsertChar(Widget, XEvent *, String *, Cardinal *), ForwardChar(Widget, XEvent *, String *, Cardinal *),
++  ForwardToEnd(Widget, XEvent *, String *, Cardinal *), BackwardChar(Widget, XEvent *, String *, Cardinal *), BackwardToStart(Widget, XEvent *, String *, Cardinal *), DeleteNext(Widget, XEvent *, String *, Cardinal *),
++  DeleteToEnd(Widget, XEvent *, String *, Cardinal *), DeletePrev(Widget, XEvent *, String *, Cardinal *), DeleteToStart(Widget, XEvent *, String *, Cardinal *), DeleteHighlighted(Widget, XEvent *, String *, Cardinal *),
++  TransposeChars(Widget, XEvent *, String *, Cardinal *), SelectStart(Widget, XEvent *, String *, Cardinal *), ExtendStart(Widget, XEvent *, String *, Cardinal *), ExtendAdjust(Widget, XEvent *, String *, Cardinal *),
++  ExtendEnd(Widget, XEvent *, String *, Cardinal *), InsertSelection(Widget, XEvent *, String *, Cardinal *);
+ 
+ static char defaultTranslations[] =
+ "<Key>Right:	forward-char()\n\
+@@ -162,9 +162,9 @@ MwTextFieldClassRec mwTextfieldClassRec
+ 	/* compress_exposure     */ XtExposeCompressMultiple,
+ 	/* compress_enterleave   */ True,
+ 	/* visible_interest      */ True,
+-	/* destroy               */ Destroy,
++	/* destroy               */ (XtWidgetProc)Destroy,
+ 	/* resize                */ Resize,
+-	/* expose                */ Redisplay,
++	/* expose                */ (XtExposeProc)Redisplay,
+ 	/* set_values            */ SetValues,
+ 	/* set_values_hook       */ NULL,
+ 	/* set_values_almost     */ XtInheritSetValuesAlmost,
+--- Mowitz-0.3.1/Mowitz/MwNws.c.orig	2005-11-02 20:57:44.000000000 +0100
++++ Mowitz-0.3.1/Mowitz/MwNws.c	2026-02-08 10:00:59.319442974 +0100
+@@ -657,10 +657,10 @@ static XtResource resources[] = {
+  *
+  ***************************************************************************/
+ 
+-static void VendorShellClassInitialize();
+-static void VendorShellInitialize();
+-static void ChangeManaged();
+-static XtGeometryResult QueryGeometry();
++static void VendorShellClassInitialize(void);
++static void VendorShellInitialize(Widget, Widget, ArgList, Cardinal *);
++static void ChangeManaged(Widget);
++static XtGeometryResult QueryGeometry(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
+ 
+ #define SuperClass (&wmShellClassRec)
+ externaldef(vendorshellclassrec) VendorShellClassRec vendorShellClassRec = {
+@@ -730,8 +730,10 @@ static void VendorShellClassInitialize()
+ }
+ 
+ /* ARGSUSED */
+-static void VendorShellInitialize(req, new)
++static void VendorShellInitialize(req, new, a, c)
+ 	Widget req, new;
++	ArgList a;
++	Cardinal *c;
+ {
+     XtAddEventHandler(new, (EventMask) 0, TRUE, _XEditResCheckMessages, NULL);
+ }
+--- Mowitz-0.3.1/examples/TreeFSel.c.orig	2005-11-02 20:57:48.000000000 +0100
++++ Mowitz-0.3.1/examples/TreeFSel.c	2026-02-08 10:04:35.297251527 +0100
+@@ -80,17 +80,17 @@ static XtResource resources[] = {
+ };
+ #undef offset
+ 
+-static void Initialize();
+-static void Realize();
+-static void Resize();
+-static Boolean SetValues();
+-static XtGeometryResult GeometryManager();
+-static void Destroy();
+-static void PathCallback();
+-static void FileCallback();
+-static void OkCallback();
+-static void CancelCallback();
+-static void InitTree();
++static void Initialize(Widget, Widget, ArgList, Cardinal *);
++static void Realize(Widget, XtValueMask *, XSetWindowAttributes *);
++static void Resize(Widget);
++static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
++static XtGeometryResult GeometryManager(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
++static void Destroy(TreeFSelWidget);
++static void PathCallback(Widget, XtPointer, XtPointer);
++static void FileCallback(Widget, XtPointer, XtPointer);
++static void OkCallback(Widget, XtPointer, XtPointer);
++static void CancelCallback(Widget, XtPointer, XtPointer);
++static void InitTree(TreeFSelWidget);
+ 
+ TreeFSelClassRec treefselClassRec = {
+ 	{
+@@ -113,7 +113,7 @@ TreeFSelClassRec treefselClassRec = {
+ 	/* compress_exposure  	 */ XtExposeCompressMultiple,
+ 	/* compress_enterleave	 */ True,
+ 	/* visible_interest	 */ True,
+-	/* destroy		 */ Destroy,
++	/* destroy		 */ (XtWidgetProc)Destroy,
+ 	/* resize		 */ Resize,
+ 	/* expose		 */ XtInheritExpose,
+ 	/* set_values	  	 */ SetValues,
