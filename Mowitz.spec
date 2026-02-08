@@ -2,12 +2,13 @@ Summary:	This is the Mowitz ("More widgets") library
 Summary(pl.UTF-8):	Biblioteka Mowitz ("More widgets" - "więcej widgetów")
 Name:		Mowitz
 Version:	0.3.1
-Release:	1
+Release:	2
 License:	GPL v2+, LGPL v2+, MIT
 Group:		Libraries
 Source0:	http://siag.nu/pub/mowitz/%{name}-%{version}.tar.gz
 # Source0-md5:	35cfd18b05d45e0ba6b48896bd258138
 Patch0:		%{name}-includes.patch
+Patch1:		%{name}-types.patch
 URL:		http://siag.nu/mowitz/
 BuildRequires:	neXtaw-devel
 BuildRequires:	xorg-lib-libX11-devel
@@ -60,6 +61,7 @@ Statyczna biblioteka Mowitz.
 %prep
 %setup -q
 %patch -P0 -p1
+%patch -P1 -p1
 
 %build
 %configure \
