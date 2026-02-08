@@ -89,8 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING ChangeLog README
-%attr(755,root,root) %{_libdir}/libMowitz.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libMowitz.so.0
+%{_libdir}/libMowitz.so.*.*.*
+%ghost %{_libdir}/libMowitz.so.0
 %dir %{_datadir}/%{name}
 %{_datadir}/%{name}/fonts
 %{_datadir}/%{name}/pixmaps
@@ -106,7 +106,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc doc/{*.README,*.html,*.gif}
 %attr(755,root,root) %{_bindir}/mowitz-config
-%attr(755,root,root) %{_libdir}/libMowitz.so
+%{_libdir}/libMowitz.so
 %{_libdir}/libMowitz.la
 %{_includedir}/Mowitz
 %{_mandir}/man3/Slider.3*
